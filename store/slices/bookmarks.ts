@@ -7,6 +7,7 @@ export interface BookmarkSlice {
   bookmarked: Item[];
   addBookmark: (item: Item) => void;
   removeBookmark: (id: number) => void;
+  clearBookmarks: () => void;
 }
 
 export const createBookmarkSlice = persist<BookmarkSlice>(
@@ -21,6 +22,9 @@ export const createBookmarkSlice = persist<BookmarkSlice>(
       set((state) => ({
         bookmarked: state.bookmarked.filter((item) => item.id !== id),
       }));
+    },
+    clearBookmarks: () => {
+      set({ bookmarked: [] });
     },
   }),
   {
