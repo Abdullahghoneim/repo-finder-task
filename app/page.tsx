@@ -24,7 +24,7 @@ export default function Home() {
         setError(null);
         try {
           const response = await axios.get(
-            `${process.env.GITHUB_BASE_URL}/search/repositories?q=${query}&per_page=10&page=${pageNum}`
+            `${process.env.NEXT_PUBLIC_GITHUB_BASE_URL}/search/repositories?q=${query}&per_page=10&page=${pageNum}`
           );
           setResults(response.data);
           setTotalPages(Math.ceil(response.data.total_count / 10));
