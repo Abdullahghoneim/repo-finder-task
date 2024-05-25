@@ -6,24 +6,29 @@ import axios from "axios";
 import { GitHubResult } from "@/types/githubResult";
 import Card from "@/components/Card";
 import debounce from "@/utils/debounce";
+import Loading from "@/components/Card/Loading";
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<GitHubResult>();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // Debounced API call
   const searchAPI = useCallback(
     debounce(async (query: string, pageNum: number) => {
       if (query) {
+        setLoading(true);
         try {
           const response = await axios.get(
             `https://api.github.com/search/repositories?q=${query}&per_page=10&page=${pageNum}`
           );
           setResults(response.data);
           setTotalPages(Math.ceil(response.data.total_count / 10));
+          setLoading(false);
         } catch (error) {
+          setLoading(false);
           console.error("Error fetching data:", error);
         }
       }
@@ -58,9 +63,13 @@ export default function Home() {
           type="text"
         />
         <div className="space-y-4 mt-5">
-          {results?.items.map((item) => (
-            <Card key={item.id} {...item} />
-          ))}
+          {loading ? (
+            <>
+              <Loading />
+            </>
+          ) : (
+            results?.items.map((item) => <Card key={item.id} {...item} />)
+          )}
           {results && results?.items?.length === 0 && (
             <div className="flex flex-col items-center justify-center h-[50vh]">
               <SearchIcon className="h-12 w-12 text-gray-400 mb-4" />

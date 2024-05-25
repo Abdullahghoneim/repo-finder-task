@@ -25,6 +25,6 @@ export const createBookmarkSlice = persist<BookmarkSlice>(
   }),
   {
     name: "bookmarks",
-    partialize: (state) => ({ user: state.bookmarked }),
+    partialize: (state) => ({ bookmarked: state.bookmarked }),
   }
 );

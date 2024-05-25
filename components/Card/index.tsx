@@ -22,7 +22,6 @@ export default function Card({ ...props }: Item) {
           <p className="text-gray-500 text-sm"> {description} </p>
         </div>
       </div>
-
       <div className="flex items-center mt-5 justify-between">
         <div className="flex items-center space-x-2 text-gray-500">
           <StarIcon className="h-4 w-4" />

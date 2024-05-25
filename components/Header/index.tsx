@@ -5,10 +5,10 @@ export default function Header() {
   return (
     <header className="bg-gray-900 text-white py-4 px-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
+        <Link  href="/" className="flex items-center">
           <GithubIcon className="h-6 w-6 mr-2" />
           <h1 className="text-xl font-bold">GitHub Bookmarker</h1>
-        </div>
+        </Link>
         <nav>
           <ul className="flex space-x-4">
             <li>
@@ -17,7 +17,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link className="hover:underline" href="/">
+              <Link className="hover:underline" href="/bookmarks">
                 Bookmarks
               </Link>
             </li>
