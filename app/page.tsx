@@ -14,12 +14,14 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Debounced API call
   const searchAPI = useCallback(
     debounce(async (query: string, pageNum: number) => {
       if (query) {
         setLoading(true);
+        setError(null);
         try {
           const response = await axios.get(
             `https://api.github.com/search/repositories?q=${query}&per_page=10&page=${pageNum}`
@@ -29,6 +31,7 @@ export default function Home() {
           setLoading(false);
         } catch (error) {
           setLoading(false);
+          setError("An error occurred while fetching data.");
           console.error("Error fetching data:", error);
         }
       }
@@ -67,6 +70,12 @@ export default function Home() {
             <>
               <Loading />
             </>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center h-[50vh]">
+              <TriangleAlertIcon className="h-12 w-12 text-red-500 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">{error}</h2>
+              <p className="text-gray-500 mb-6" />
+            </div>
           ) : (
             results?.items.map((item) => <Card key={item.id} {...item} />)
           )}
@@ -141,6 +150,26 @@ const PrevIcon = () => (
   </svg>
 );
 
+function TriangleAlertIcon({ className }: { className: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
 function SearchIcon({ className }: { className: string }) {
   return (
     <svg
