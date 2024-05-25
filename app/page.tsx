@@ -59,12 +59,7 @@ export default function Home() {
         />
         <div className="space-y-4 mt-5">
           {results?.items.map((item) => (
-            <Card
-              key={item.id}
-              title={item.full_name}
-              description={item?.description}
-              stars={item.stargazers_count}
-            />
+            <Card key={item.id} {...item} />
           ))}
           {results && results?.items?.length === 0 && (
             <div className="flex flex-col items-center justify-center h-[50vh]">

@@ -1,20 +1,24 @@
+import { useAppStore } from "@/store";
+import { Item } from "@/types/githubResult";
 import formatStars from "@/utils/formatNumber";
 import React from "react";
 
-export default function Card({
-  title,
-  description,
-  stars,
-}: {
-  title: string;
-  description?: string;
-  stars: number;
-}) {
+export default function Card({ ...props }: Item) {
+  const { full_name, description, stargazers_count } = props;
+
+  const { addBookmark, bookmarked, removeBookmark } = useAppStore();
+
+  const isBookmarked = bookmarked.some((item) => item.id === props.id);
+
+  const handleBookmark = () => {
+    isBookmarked ? removeBookmark(props.id) : addBookmark(props);
+  };
+
   return (
     <div className="shadow border rounded-md p-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold"> {title} </h2>
+          <h2 className="text-lg font-bold"> {full_name} </h2>
           <p className="text-gray-500 text-sm"> {description} </p>
         </div>
       </div>
@@ -22,11 +26,16 @@ export default function Card({
       <div className="flex items-center mt-5 justify-between">
         <div className="flex items-center space-x-2 text-gray-500">
           <StarIcon className="h-4 w-4" />
-          <span>{formatStars(stars)}</span>
+          <span>{formatStars(stargazers_count)}</span>
         </div>
-        <button className="px-3 border items-center justify-center text-sm gap-2 py-1 rounded-md flex ">
-          <Bookmark className="h-4 w-4" />
-          Bookmark
+        <button
+          onClick={handleBookmark}
+          className="px-3 border items-center justify-center text-sm gap-2 py-1 rounded-md flex "
+        >
+          <Bookmark
+            className={`h-4 w-4 ${isBookmarked ? "fill-black" : ""} `}
+          />
+          {isBookmarked ? "Bookmarked" : "Bookmark"}
         </button>
       </div>
     </div>
