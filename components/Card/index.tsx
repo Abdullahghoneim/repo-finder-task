@@ -7,7 +7,7 @@ export default function Card({
   stars,
 }: {
   title: string;
-  description: string;
+  description?: string;
   stars: number;
 }) {
   return (
